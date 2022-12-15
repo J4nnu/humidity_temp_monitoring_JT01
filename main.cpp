@@ -57,10 +57,16 @@ int main()
 }
 
 void sensorMeasure(){
+    int tempbitshift=0;
+    float calibratedTemp=0;
     i2c.write(measure,data,1);//Measure request
     ThisThread::sleep_for(30ms);
     i2c.read(fetch,data,4);//fetch measurements to "data" array
     sensorData[0]=data[0]<<8|data[1];//save humidity data to array [0]
-    sensorData[1]=(data[2]<<6|data[3]>>2);
+    //sensorData[1]=(data[2]<<6|data[3]>>2);
+    
+    tempbitshift=data[2]<<6|data[3]>>2);
+    calibratedTemp=(tempbitshift/16382)*165-40;
+    printf("kaliproitu temppi %d\n",calibratedTemp);
     float contemp=sensorData[1];
 }
